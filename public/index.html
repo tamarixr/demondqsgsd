@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CaptionForge — Auto Caption Maker</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">CC</span>
+        <span class="brand-name">CaptionForge</span>
+      </div>
+      <div class="steps">
+        <span class="step active" data-step="1">1. Upload</span>
+        <span class="step" data-step="2">2. Style &amp; Edit</span>
+        <span class="step" data-step="3">3. Export</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- STEP 1: Upload -->
+      <section id="panel-upload" class="panel">
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" accept="video/*" hidden />
+          <p class="drop-title">Drop a video here or click to browse</p>
+          <p class="drop-sub">MP4, MOV, MKV — auto-transcribed with word-level timestamps</p>
+          <div class="model-select">
+            <label for="modelSize">Transcription quality</label>
+            <select id="modelSize">
+              <option value="tiny">Tiny (fastest)</option>
+              <option value="base" selected>Base (recommended)</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium (most accurate)</option>
+            </select>
+          </div>
+        </div>
+        <div id="uploadStatus" class="status"></div>
+      </section>
+
+      <!-- STEP 2: Style + Edit + Preview -->
+      <section id="panel-edit" class="panel hidden">
+        <div class="workspace">
+          <div class="preview-col">
+            <div class="video-wrap" id="videoWrap">
+              <video id="previewVideo" controls></video>
+              <div id="captionOverlay" class="caption-overlay"></div>
+            </div>
+            <div class="transcript-editor">
+              <h3>Transcript <span class="hint">(click a word to edit it)</span></h3>
+              <div id="wordList" class="word-list"></div>
+            </div>
+          </div>
+
+          <div class="style-col">
+            <h3>Caption Style</h3>
+
+            <div class="field">
+              <label>Font</label>
+              <select id="fontFamily"></select>
+            </div>
+
+            <div class="field row2">
+              <div>
+                <label>Font size <span id="fontSizeVal">42</span></label>
+                <input type="range" id="fontSize" min="18" max="90" value="42" />
+              </div>
+              <div>
+                <label>Outline width <span id="outlineWidthVal">3</span></label>
+                <input type="range" id="outlineWidth" min="0" max="10" value="3" />
+              </div>
+            </div>
+
+            <div class="field row2">
+              <div>
+                <label>Text color</label>
+                <input type="color" id="primaryColor" value="#ffffff" />
+              </div>
+              <div>
+                <label>Outline color</label>
+                <input type="color" id="outlineColor" value="#000000" />
+              </div>
+            </div>
+
+            <div class="field row2">
+              <div>
+                <label>Highlight color</label>
+                <input type="color" id="highlightColor" value="#00e5ff" />
+              </div>
+              <div>
+                <label>Shadow <span id="shadowVal">1</span></label>
+                <input type="range" id="shadow" min="0" max="6" value="1" />
+              </div>
+            </div>
+
+            <div class="field row2">
+              <label class="checkbox"><input type="checkbox" id="bold" checked /> Bold</label>
+              <label class="checkbox"><input type="checkbox" id="italic" /> Italic</label>
+            </div>
+
+            <div class="field row2">
+              <label class="checkbox"><input type="checkbox" id="uppercase" /> UPPERCASE</label>
+              <label class="checkbox"><input type="checkbox" id="background" /> Background box</label>
+            </div>
+
+            <div class="field row2" id="bgColorField" style="display:none">
+              <div>
+                <label>Box color</label>
+                <input type="color" id="backgroundColor" value="#000000" />
+              </div>
+              <div>
+                <label>Box opacity <span id="bgOpacityVal">0.5</span></label>
+                <input type="range" id="backgroundOpacity" min="0" max="1" step="0.05" value="0.5" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Position</label>
+              <select id="position">
+                <option value="bottom" selected>Bottom</option>
+                <option value="middle">Middle</option>
+                <option value="top">Top</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Animation</label>
+              <select id="animation">
+                <option value="karaoke" selected>Word highlight (karaoke)</option>
+                <option value="fade">Fade in/out</option>
+                <option value="pop">Pop / bounce</option>
+                <option value="slide">Slide up</option>
+                <option value="typewriter">Typewriter</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Words per line <span id="wordsPerLineVal">4</span></label>
+              <input type="range" id="wordsPerLine" min="1" max="10" value="4" />
+            </div>
+
+            <button id="renderBtn" class="primary-btn">Render Video</button>
+            <div id="renderStatus" class="status"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3: Export -->
+      <section id="panel-export" class="panel hidden">
+        <div class="export-box">
+          <h2>Your captioned video is ready</h2>
+          <video id="resultVideo" controls></video>
+          <a id="downloadLink" class="primary-btn" download>Download MP4</a>
+          <button id="startOverBtn" class="ghost-btn">Start a new video</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
